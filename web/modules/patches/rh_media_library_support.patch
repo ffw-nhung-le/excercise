@@ -1,0 +1,61 @@
+diff --git a/modules/rh_media_library/rh_media_library.info.yml b/modules/rh_media_library/rh_media_library.info.yml
+new file mode 100644
+index 0000000..f3cdd4e
+--- /dev/null
++++ b/modules/rh_media_library/rh_media_library.info.yml
+@@ -0,0 +1,7 @@
++name: Rabbit Hole media library entity
++type: module
++description: Adds Rabbit Hole functionality for media library entity.
++core: 8.x
++dependencies:
++  - rabbit_hole
++  - media_library
+diff --git a/modules/rh_media_library/rh_media_library.module b/modules/rh_media_library/rh_media_library.module
+new file mode 100644
+index 0000000..fbec6c3
+--- /dev/null
++++ b/modules/rh_media_library/rh_media_library.module
+@@ -0,0 +1,18 @@
++<?php
++
++/**
++ * @file
++ * Contains rh_media_library.module.
++ */
++
++use Drupal\Core\Entity\EntityTypeInterface;
++
++/**
++ * Implements hook_entity_base_field_info().
++ */
++function rh_media_library_entity_base_field_info(EntityTypeInterface $entity_type) {
++  if ($entity_type->id() == 'media') {
++    return \Drupal::service('rabbit_hole.entity_extender')
++      ->getRabbitHoleFields('media');
++  }
++}
+diff --git a/modules/rh_media_library/src/Plugin/RabbitHoleEntityPlugin/Media.php b/modules/rh_media_library/src/Plugin/RabbitHoleEntityPlugin/Media.php
+new file mode 100644
+index 0000000..1976d5d
+--- /dev/null
++++ b/modules/rh_media_library/src/Plugin/RabbitHoleEntityPlugin/Media.php
+@@ -0,0 +1,18 @@
++<?php
++
++namespace Drupal\rh_media_library\Plugin\RabbitHoleEntityPlugin;
++
++use Drupal\rabbit_hole\Plugin\RabbitHoleEntityPluginBase;
++
++/**
++ * Implements rabbit hole behavior for media library.
++ *
++ * @RabbitHoleEntityPlugin(
++ *   id = "rh_media_library",
++ *   label = @Translation("Media Library"),
++ *   entityType = "media"
++ * )
++ */
++class Media extends RabbitHoleEntityPluginBase {
++
++}
