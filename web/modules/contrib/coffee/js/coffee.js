@@ -91,9 +91,16 @@
                 DrupalCoffee.isItemSelected = false;
               },
               select: function (event, ui) {
-                DrupalCoffee.redirect(ui.item.value, event.metaKey);
-                event.preventDefault();
+                // If ctrlKey pressed + click event, keep the default browser behaviour.
+                if(!(event.ctrlKey && (event.which == 1 || event.which == 2))) {
+                  DrupalCoffee.redirect(ui.item.value, event);
+                  event.preventDefault();
+                }
                 return false;
+              },
+              close: function (event, ui) {
+                // Always keep the list open for the current input value.
+                $autocomplete.autocomplete("search");
               },
               delay: 0,
               appendTo: DrupalCoffee.results
@@ -107,7 +114,7 @@
               }
               return $('<li></li>')
                 .data('item.autocomplete', item)
-                .append('<a>' + item.label + '<small class="description">' + description + '</small></a>')
+                .append('<a href="'+item.value+'">' + item.label + '<small class="description">' + description + '</small></a>')
                 .appendTo(ul);
             };
 
@@ -121,19 +128,12 @@
             };
 
             DrupalCoffee.form.keydown(function (event) {
-              if (event.keyCode === 13) {
-                var openInNewWindow = false;
-
-                if (event.metaKey) {
-                  openInNewWindow = true;
-                }
-
-                if (!DrupalCoffee.isItemSelected) {
-                  var $firstItem = $(DrupalCoffee.results).find('li:first').data('item.autocomplete');
-                  if (typeof $firstItem === 'object') {
-                    DrupalCoffee.redirect($firstItem.value, openInNewWindow);
-                    event.preventDefault();
-                  }
+              // Press Enter.
+              if (event.which === 13 && !DrupalCoffee.isItemSelected) {
+                var $firstItem = $(DrupalCoffee.results).find('li:first').data('item.autocomplete');
+                if (typeof $firstItem === 'object') {
+                  DrupalCoffee.redirect($firstItem.value, event);
+                  event.preventDefault();
                 }
               }
             });
@@ -154,13 +154,13 @@
           if (DrupalCoffee.wrapper.hasClass('hide-form') &&
             event.altKey === true &&
               // 68/206 = d/D, 75 = k.
-            (event.keyCode === 68 || event.keyCode === 206 || event.keyCode === 75)) {
+            (event.which === 68 || event.which === 206 || event.which === 75)) {
             DrupalCoffee.coffee_show();
             event.preventDefault();
           }
           // Close the form with esc or alt + D.
           else {
-            if (!DrupalCoffee.wrapper.hasClass('hide-form') && (event.keyCode === 27 || (event.altKey === true && (event.keyCode === 68 || event.keyCode === 206)))) {
+            if (!DrupalCoffee.wrapper.hasClass('hide-form') && (event.which === 27 || (event.altKey === true && (event.which === 68 || event.which === 206)))) {
               DrupalCoffee.coffee_close();
               event.preventDefault();
             }
@@ -179,7 +179,7 @@
     DrupalCoffee.wrapper.removeClass('hide-form');
     DrupalCoffee.bg.show();
     DrupalCoffee.field.focus();
-    $(DrupalCoffee.field).autocomplete({enable: true});
+    $(DrupalCoffee.field).autocomplete("enable");
   };
 
   /**
@@ -189,7 +189,7 @@
     DrupalCoffee.field.val('');
     DrupalCoffee.wrapper.addClass('hide-form');
     DrupalCoffee.bg.hide();
-    $(DrupalCoffee.field).autocomplete({enable: false});
+    $(DrupalCoffee.field).autocomplete("close").autocomplete("disable");
   };
 
   /**
@@ -197,13 +197,14 @@
    *
    * @param {string} path
    *   URL to redirect to.
-   * @param {bool} openInNewWindow
-   *   Indicates if the URL should be open in a new window.
+   * @param {object} event
+   *   Contextual event object.
    */
-  DrupalCoffee.redirect = function (path, openInNewWindow) {
+  DrupalCoffee.redirect = function (path, event) {
     DrupalCoffee.coffee_close();
 
-    if (openInNewWindow) {
+    // New window if system metakey or ctrlKey pressed.
+    if (typeof event != 'undefined' && (event.metaKey || event.ctrlKey)) {
       window.open(path);
     }
     else {
