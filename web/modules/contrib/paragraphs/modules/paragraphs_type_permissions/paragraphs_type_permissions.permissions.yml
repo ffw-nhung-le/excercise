@@ -1,3 +1,11 @@
+create any paragraph:
+  title: 'Create any paragraph'
+delete any paragraph:
+  title: 'Delete any paragraph'
+update any paragraph:
+  title: 'Edit any paragraph'
+view any paragraph:
+  title: 'View any paragraph'
 permission_callbacks:
   - \Drupal\paragraphs_type_permissions\ParagraphsTypePermissions::globalPermissions
   - \Drupal\paragraphs_type_permissions\ParagraphsTypePermissions::paragraphTypePermissions

@@ -56,7 +56,9 @@ function paragraphs_type_permissions_paragraph_access(ParagraphInterface $entity
 
   // If the current user has access to this type/operation, return access
   // allowed, forbidden otherwise.
-  if ($account->hasPermission('bypass paragraphs type content access') || $account->hasPermission($operation . ' paragraph content ' . $type)) {
+  if ($account->hasPermission('bypass paragraphs type content access')
+      || $account->hasPermission($operation . ' paragraph content ' . $type)
+      || $account->hasPermission($operation . ' any paragraph')) {
     $permissions[$account->id()][$type][$operation] = AccessResult::allowed()->cachePerPermissions();
   }
   else {
@@ -84,7 +86,9 @@ function paragraphs_type_permissions_paragraph_create_access(AccountInterface $a
 
   // If the current user has access to this type/op, return access allowed,
   // forbidden otherwise.
-  if ($account->hasPermission('bypass paragraphs type content access') || $account->hasPermission($op . ' paragraph content ' . $type)) {
+  if ($account->hasPermission('bypass paragraphs type content access')
+      || $account->hasPermission($op . ' paragraph content ' . $type)
+      || $account->hasPermission($op . ' any paragraph')) {
     $permissions[$account->id()][$type][$op] = AccessResult::allowed()->cachePerPermissions();
   }
   else {
