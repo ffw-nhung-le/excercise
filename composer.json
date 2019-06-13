@@ -27,6 +27,7 @@
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.7.0",
         "drupal/devel": "^2.1",
+        "drupal/dropzonejs": "^2.0",
         "drupal/paragraphs": "^1.8",
         "drupal/pathauto": "^1.4",
         "drupal/rabbit_hole": "^1.0",
