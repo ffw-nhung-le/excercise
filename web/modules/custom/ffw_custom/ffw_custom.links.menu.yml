@@ -1,0 +1,9 @@
+
+# Office menu items definition
+entity.office.collection:
+  title: 'Office'
+  route_name: entity.office.collection
+  description: 'List Office (bundles)'
+  parent: system.admin_structure
+  weight: 99
+

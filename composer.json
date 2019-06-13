@@ -24,7 +24,7 @@
         "drupal/adminimal_theme": "^1.5",
         "drupal/codesnippet": "^1.6",
         "drupal/coffee": "^1.0",
-        "drupal/console": "^1.0.2",
+        "drupal/console": "~1.0",
         "drupal/core": "^8.7.0",
         "drupal/devel": "^2.1",
         "drupal/dropzonejs": "^2.0",

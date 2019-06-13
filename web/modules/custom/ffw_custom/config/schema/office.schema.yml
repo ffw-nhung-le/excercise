@@ -1,0 +1,12 @@
+ffw_custom.office.*:
+  type: config_entity
+  label: 'Office config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string
